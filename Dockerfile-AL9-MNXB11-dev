@@ -30,6 +30,7 @@ ADD https://root.cern/download/root_v6.28.04.source.tar.gz ${DOWNLOADS}/root_v6.
 RUN tar zxf ${DOWNLOADS}/root_v6.28.04.source.tar.gz -C ${SOURCES}
 # Docker commands are pathless, they always start from /. So here i run a whole command to 
 # ensure cmake is in the right path. Apparently cmake configure has no build path option...
+# Comment these lines below if you want to build ROOT manually once the container is built.
 RUN mkdir -p ${BUILDDIR}/root ${APPS}/root; \
     cd ${BUILDDIR}/root; \
     cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX=${APPS}/root ${SOURCEDIR}/root-6.28.04/; \
