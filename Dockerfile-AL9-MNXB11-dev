@@ -8,15 +8,31 @@ RUN dnf -y install patch libuuid libuuid-devel
 # Deps for ROOT (see https://root.cern/install/dependencies/)
 RUN dnf -y install git make cmake gcc-c++ gcc binutils libX11-devel libXpm-devel libXft-devel libXext-devel python openssl-devel compat-openssl11
 
-RUN mkdir /opt/download
-RUN mkdir /opt/sources
-ADD https://root.cern/download/root_v6.28.04.source.tar.gz /opt/download/root_v6.28.04.source.tar.gz
-RUN tar zxf /opt/download/root_v6.28.04.source.tar.gz -C /opt/sources/
+# Dir for course specific material
+ENV MNXB11DIR=/opt
+# Dir for all downloads
+ENV DOWNLOADS=${MNXB11DIR}/download
+RUN mkdir ${DOWNLOADS}
+# Dir for all sources, a subfolder for each source tree
+ENV SOURCEDIR=${MNXB11DIR}/source
+RUN mkdir $SOURCEDIR
+# Dir for all builds, a subfolder for each build environment
+ENV BUILDDIR=${MNXB11DIR}/build
+RUN mkdir $BUILDDIR
+# Dir for all binaries, a subfolder for each software
+ENV APPS=${MNXB11DIR}/apps
+RUN mkdir ${APPS}
+
+# ROOT build
+# Download sources
+ADD https://root.cern/download/root_v6.28.04.source.tar.gz ${DOWNLOADS}/root_v6.28.04.source.tar.gz
+# Unpack
+RUN tar zxf ${DOWNLOADS}/root_v6.28.04.source.tar.gz -C ${SOURCES}
 # Docker commands are pathless, they always start from /. So here i run a whole command to 
 # ensure cmake is in the right path. Apparently cmake configure has no build path option...
-RUN mkdir -p /opt/root /opt/build/root; \
-    cd /opt/build/root; \
-    cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX=/opt/root /opt/sources/root-6.28.04/; \
-    cmake --build /opt/build/root --target install
+RUN mkdir -p ${BUILDDIR}/root ${APPS}/root; \
+    cd ${BUILDDIR}/root; \
+    cmake -DCMAKE_CXX_STANDARD=17 -DCMAKE_INSTALL_PREFIX=${APPS}/root ${SOURCEDIR}/root-6.28.04/; \
+    cmake --build ${BUILDDIR}/root --target install
 
 CMD ["/bin/bash"]
