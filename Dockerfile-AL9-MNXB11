@@ -1,0 +1,15 @@
+FROM almalinux:9.2
+
+RUN dnf -y update
+RUN dnf -y install vim man
+# Deps for coding e.g. building root
+RUN dnf -y install patch libuuid libuuid-devel
+
+# Deps for ROOT (see https://root.cern/install/dependencies/)
+RUN dnf -y install git make cmake gcc-c++ gcc binutils libX11-devel libXpm-devel libXft-devel libXext-devel python openssl-devel compat-openssl11
+
+RUN mkdir /opt/download
+ADD https://root.cern/download/root_v6.28.04.Linux-centos8-x86_64-gcc8.5.tar.gz /opt/download/root_v6.28.04.Linux-centos8-x86_64-gcc8.5.tar.gz
+RUN tar zxf /opt/download/root_v6.28.04.Linux-centos8-x86_64-gcc8.5.tar.gz -C /opt
+
+CMD ["/bin/bash"]
