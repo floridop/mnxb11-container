@@ -42,15 +42,24 @@ If you're totally new to Docker I recommend to read <https://docs.docker.com/get
 ## Commands
 
   1. Get this repo from github:
-     ```git clone https://github.com/floridop/mnxb11-container.git```
+     ```bash
+     git clone https://github.com/floridop/mnxb11-container.git
+     ```
   2. Cd into the repo
-     ```cd mnxb11-container```
-  3. Run docker build on the selected container, i.e.
-     ```docker build -t "mnxb11al9:version" -f Dockerfile-AL9-MNXB11 .```
-  4. Wait until the build completes
-  5. You can now list the build container with
-  ```docker image ls```
-  6. You can start the container with
-  ```docker run -it mnxb11al9:version```
-
+     ```bash
+     cd mnxb11-container
+     ```
+  4. Run docker build on the selected container, i.e.
+     ```bash
+     docker build -t "mnxb11al9:version" -f Dockerfile-AL9-MNXB11 .
+     ```
+  6. Wait until the build completes
+  7. You can now list the build container with
+     ```bash
+     docker image ls
+     ```
+  9. You can start the container with
+     ```bash
+     docker run -it mnxb11al9:version
+     ```
 
