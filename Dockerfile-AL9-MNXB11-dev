@@ -1,7 +1,13 @@
 FROM almalinux:9.2
 
 RUN dnf -y update
-RUN dnf -y install vim man
+# Adding epel for screen and xclock
+RUN dnf -y install epel-release
+RUN dnf -y update
+
+# Various deps
+RUN dnf -y install vim man screen xclock xdg-utils
+
 # Deps for coding e.g. building root
 RUN dnf -y install patch libuuid libuuid-devel
 
@@ -30,9 +36,9 @@ RUN mkdir ${SCRIPTS}
 # Download sources
 ADD https://root.cern/download/root_v6.28.04.source.tar.gz ${DOWNLOADS}/root_v6.28.04.source.tar.gz
 # Unpack
-RUN tar zxf ${DOWNLOADS}/root_v6.28.04.source.tar.gz -C ${SOURCES}
+RUN tar zxf ${DOWNLOADS}/root_v6.28.04.source.tar.gz -C ${SOURCEDIR}
 
 # Add all scripts in a scripts folder where this is ran
-ADD scripts /opt/scripts
+ADD scripts/* ${SCRIPTS}/
 
 CMD ["/bin/bash"]

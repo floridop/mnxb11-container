@@ -28,11 +28,17 @@ RUN mkdir $BUILDDIR
 # Dir for all binaries, a subfolder for each software
 ENV APPS=${MNXB11DIR}/apps
 RUN mkdir ${APPS}
+# Dir for all scripts
+ENV SCRIPTS=${MNXB11DIR}/scripts
+RUN mkdir ${SCRIPTS}
 # Do we need a custom LIBS folder?
 
 # Place all precompiled software in a folder called "apps" in the folder where you
 # run `docker build`. The following line will copy all of them in ${APPS}.
 # Note: one app per folder, to keep consistency.
 ADD apps $APPS
+
+# Add all scripts in a scripts folder where this is ran
+ADD scripts/* ${SCRIPTS}/
 
 CMD ["/bin/bash"]
