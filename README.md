@@ -6,7 +6,7 @@ to prepare the environment.
 
 Instead dowload the prebuilt images directly from dockerhub:
 
-<TODO URL HERE>
+`TODO URL HERE`
 
 # Dockerfiles description
 
