@@ -5,6 +5,9 @@
 #SBATCH -p lu48
 #SBATCH -J MNXB11-container-buildscript
 
+# This script can be used to submit a build script to SLURM
+# Edit the SBATCH entries above according to your needs
+
 # Path where the build and apps folders will be
 WORKDIR=/projects/hep/fs12/pp/pflorido/work
 
