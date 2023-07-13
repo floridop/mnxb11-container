@@ -23,7 +23,7 @@ It will download the sources needed and build the software at container creation
 You should download this if you're a teacher or a student that wants to build additional software for the container.  
 It takes more time and it will generate a larger container image.
 
-# How to build
+# How to build the container images
 
 **NOTE:** you do **not** need to build the container if you're attending the course. This is mainly for teachers.
 
@@ -217,6 +217,67 @@ This is standard git/github flow so I will just write the commands as a reminder
 
 # Building software in an existing container
 
-TODO
+This section of the document is useful if one has created a container with all the dependencies
+needed to succesfully build that software but wants to run the build in a cluster like Lunarc.
 
+The description below is focused mainly on Lunarc who runs Apptainer, but I give the commands for docker as well.
 
+What is needed:
+  1. A container on dockerhub that contains all dependencies and sources
+  2. A Lunarc account and a suitable allocation
+
+It is possible to add your own sources outside the container by placing them wherever you want,  
+but for the moment being I will assume the sources are already inside the container.
+
+## 0. Clone this repo
+
+## 1. Create a work folder
+This folder will be mounted inside the container read-write and will contain the output of the
+build.
+
+```bash
+mkdir containerbuild
+cd containerbuild
+mkdir work/apps work/build work/source work/scripts
+```
+If you have custom sources you can copy them inside `source`.
+
+## 2. Download the -dev container where you want to run the compilation
+
+With Apptainer:
+```shell
+apptainer pull docker://floridop/mnxb11:al9-dev.latest
+```
+With Docker:
+```shell
+docker pull floridop/mnxb11:al9-dev.latest
+```
+## 2. Clone this repo or just download/copy the scripts folder.
+The scripts contained in the repo can be used for the build.
+
+```bash
+git clone https://github.com/floridop/mnxb11-container.git
+cp -ar mnxb11-container/scripts work/scripts
+```
+
+## 3. Check the scripts 
+
+Check the content of the scripts and modify it to match your build needs.
+The basic idea is that 
+`sbatch_build.sh` calls 
+    `build.sh` that calls 
+     each build script you want, one build script per software/library
+     for example `buildroot.sh`
+
+Make sure the paths in the script make sense. By default all paths are
+based on the `/opt` folder inside the container
+Checklist:
+  - [ ] Check allocations and paths in `sbatch_build.sh` -- remember to match the container `.sif` path!
+  - [ ] Check paths in `build.sh`
+  - [ ] Create a build script `buildmysoftware.sh` relative to the `work/` directory
+
+## 4. Run the slurm batch
+
+```bash
+sbatch sbatch_build.sh
+```
