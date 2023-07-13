@@ -257,8 +257,12 @@ The scripts contained in the repo can be used for the build.
 
 ```bash
 git clone https://github.com/floridop/mnxb11-container.git
-cp -ar mnxb11-container/scripts work/scripts
+cp -ar mnxb11-container/scripts/sbatch-build.sh .
+cp -ar mnxb11-container/scripts/build.sh .
 ```
+
+Note: the above scripts should be outside the mounted `work/` dir to avoid slurm writing inside 
+the container as it runs, which will slow down the build.
 
 ## 3. Check the scripts 
 
@@ -274,7 +278,7 @@ based on the `/opt` folder inside the container
 Checklist:
   - [ ] Check allocations and paths in `sbatch_build.sh` -- remember to match the container `.sif` path!
   - [ ] Check paths in `build.sh`
-  - [ ] Create a build script `buildmysoftware.sh` relative to the `work/` directory
+  - [ ] Create a build script `buildmysoftware.sh` in the `work/scripts/` directory
 
 ## 4. Run the slurm batch
 
