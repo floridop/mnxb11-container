@@ -15,30 +15,30 @@ RUN dnf -y install patch libuuid libuuid-devel
 RUN dnf -y install git make cmake gcc-c++ gcc binutils libX11-devel libXpm-devel libXft-devel libXext-devel python openssl-devel compat-openssl11
 
 # Dir for course specific material
-ENV MNXB11DIR=/opt
+ENV MNXB11_MNXB11DIR=/opt
 # Dir for all downloads
-ENV DOWNLOADS=${MNXB11DIR}/download
-RUN mkdir ${DOWNLOADS}
+ENV MNXB11_DOWNLOADS=${MNXB11_MNXB11DIR}/download
+RUN mkdir ${MNXB11_DOWNLOADS}
 # Dir for all sources, a subfolder for each source tree
-ENV SOURCEDIR=${MNXB11DIR}/source
-RUN mkdir $SOURCEDIR
+ENV MNXB11_SOURCEDIR=${MNXB11_MNXB11DIR}/source
+RUN mkdir $MNXB11_SOURCEDIR
 # Dir for all builds, a subfolder for each build environment
-ENV BUILDDIR=${MNXB11DIR}/build
-RUN mkdir $BUILDDIR
+ENV MNXB11_BUILDDIR=${MNXB11_MNXB11DIR}/build
+RUN mkdir $MNXB11_BUILDDIR
 # Dir for all binaries, a subfolder for each software
-ENV APPS=${MNXB11DIR}/apps
-RUN mkdir ${APPS}
+ENV MNXB11_APPS=${MNXB11_MNXB11DIR}/apps
+RUN mkdir ${MNXB11_APPS}
 # Dir for all scripts
-ENV SCRIPTS=${MNXB11DIR}/scripts
-RUN mkdir ${SCRIPTS}
+ENV MNXB11_SCRIPTS=${MNXB11_MNXB11DIR}/scripts
+RUN mkdir ${MNXB11_SCRIPTS}
 # Do we need a custom LIBS folder?
 
 # Place all precompiled software in a folder called "apps" in the folder where you
 # run `docker build`. The following line will copy all of them in ${APPS}.
 # Note: one app per folder, to keep consistency.
-ADD apps $APPS
+ADD apps $MNXB11_APPS
 
 # Add all scripts in a scripts folder where this is ran
-ADD scripts/* ${SCRIPTS}/
+ADD scripts/* ${MNXB11_SCRIPTS}/
 
 CMD ["/bin/bash"]

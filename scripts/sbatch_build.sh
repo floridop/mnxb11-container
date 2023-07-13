@@ -9,12 +9,13 @@
 # Edit the SBATCH entries above according to your needs
 
 # Path where the build and apps folders will be
-WORKDIR=/projects/hep/fs12/pp/pflorido/work
+MNXB11_WORKDIR=/projects/hep/fs12/pp/pflorido/work
 
-BUILDDIR=${WORKDIR}/build
-APPS=${WORKDIR}/apps
+MNXB11_BUILDDIR=${MNXB11_WORKDIR}/build
+MNXB11_APPS=${MNXB11_WORKDIR}/apps
 
-mkdir -p $BUILDDIR $APPS
+mkdir -p $MNXB11_BUILDDIR $MNXB11_APPS
 
-apptainer exec -B $TMPDIR:$TMPDIR -B $SLURMTMP:$SLURMTMP -B $WORKDIR:/work ~/testcontainer/mnxb11_al9-dev.0.2.sif ./build.sh
+# Remember to comment out the things you do not want to build in build.sh before launching this!
+apptainer exec -B $TMPDIR:$TMPDIR -B $SLURMTMP:$SLURMTMP -B $MNXB11_WORKDIR:/work ~/testcontainer/mnxb11_al9-dev.0.2.sif ./build.sh
 
