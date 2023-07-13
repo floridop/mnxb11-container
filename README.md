@@ -12,22 +12,20 @@ https://hub.docker.com/repository/docker/floridop/mnxb11/general
 
 `Dockerfile-AL9-MNXB11`
 
-The basic minimal Dockerfile to build the course container. It does not contain sources to build software.
-
+The basic minimal Dockerfile to build the course container.  
+It does not contain sources to build software.  
 Only binaries and headers should be added to this container.
 
 `Dockerfile-AL9-MNXB11-dev`
 
-The Docker container used to build some of the software. It will download the sources needed and build the
-software at container creation time.
-
-You should download this if you're a teacher or a student that wants to build additional software for the container.
-
+The Docker container used to build some of the software.  
+It will download the sources needed and build the software at container creation time.  
+You should download this if you're a teacher or a student that wants to build additional software for the container.  
 It takes more time and it will generate a larger container image.
 
 # How to build
 
-NOTE: you do not need to build the container if you're attending the course. This is mainly for teachers.
+**NOTE:** you do **not** need to build the container if you're attending the course. This is mainly for teachers.
 
 The container follows the standard Docker build procedure described at
 
@@ -51,7 +49,7 @@ If you're totally new to Docker I recommend to read <https://docs.docker.com/get
      ```
   4. Run docker build on the selected container, i.e.
      ```bash
-     docker build -t "mnxb11al9:version" -f Dockerfile-AL9-MNXB11 .
+     docker build -t "mnxb11:al9.version" -f Dockerfile-AL9-MNXB11 .
      ```
   6. Wait until the build completes
   7. You can now list the build container with
@@ -60,22 +58,22 @@ If you're totally new to Docker I recommend to read <https://docs.docker.com/get
      ```
   9. You can start the container with
      ```bash
-     docker run -it mnxb11al9:version
+     docker run -it mnxb11:al9.version
      ```
 
 # Teachers: procedure to add software to the container
 
 To minimize the size of the container, we build two containers. One intended
 for students and for the course, and another to build software that contains
-all the sources and libraries.
+all the sources and libraries (see section "Dockerfiles description" )
 
 Custom software is placed in the container inside the `/opt/apps` folder.
 
 An overview of the procedure is as follows:
 
   1. Clone this repository
-  2. Edit the Dockerfile-AL9-MNXB11**-dev** and add the required system packages and sources that you already know of.
-  3. Build the -dev container with the new dependencies.
+  2. Edit `Dockerfile-AL9-MNXB11-de` and add the required system packages and sources that you already know of.
+  3. Build the `-dev` container with the new dependencies.
   4. Start the container with a bind-mount writable folder, it will be used to export the compiled binaries outside the container to an `apps` folder
   5. Inside the container, install additional required packages and additional sources needed. 
      Take note of them as you will need to add them to the Dockerfiles later!
