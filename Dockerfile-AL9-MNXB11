@@ -6,7 +6,7 @@ RUN dnf -y install epel-release
 RUN dnf -y update
 
 # Various deps
-RUN dnf -y install vim man screen xclock xdg-utils
+RUN dnf -y install vim man screen xclock xorg-x11-xauth xdg-utils clang clang-tools-extra llvm
 
 # Deps for coding e.g. building root
 RUN dnf -y install patch libuuid libuuid-devel
