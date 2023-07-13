@@ -72,7 +72,7 @@ Custom software is placed in the container inside the `/opt/apps` folder.
 An overview of the procedure is as follows:
 
   1. Clone this repository
-  2. Edit `Dockerfile-AL9-MNXB11-de` and add the required system packages and sources that you already know of.
+  2. Edit `Dockerfile-AL9-MNXB11-dev` and add the required system packages and sources that you already know of.
   3. Build the `-dev` container with the new dependencies.
   4. Start the container with a bind-mount writable folder, it will be used to export the compiled binaries outside the container to an `apps` folder
   5. Inside the container, install additional required packages and additional sources needed. 
