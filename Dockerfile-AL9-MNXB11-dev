@@ -1,18 +1,41 @@
 FROM almalinux:9.2
 
-RUN dnf -y update
-# Adding epel for screen and xclock
-RUN dnf -y install epel-release
-RUN dnf -y update
 
-# Various deps
-RUN dnf -y install vim man screen xclock xdg-utils
+RUN dnf -y update 
+# Addding epel for screen and xclock 
+RUN dnf -y install epel-release 
 
-# Deps for coding e.g. building root
-RUN dnf -y install patch libuuid libuuid-devel
+# Various deps 
+RUN dnf -y install vim man screen xclock xdg-utils  xorg-x11-xauth 
 
-# Deps for ROOT (see https://root.cern/install/dependencies/)
-RUN dnf -y install git make cmake gcc-c++ gcc binutils libX11-devel libXpm-devel libXft-devel libXext-devel python openssl-devel compat-openssl11
+# Deps for coding (e.g. building root
+RUN dnf -y install patch libuuid libuuid-devel 
+
+# Unix utilities 
+RUN dnf -y install findutils  
+
+# Compilation/Build tools
+RUN dnf -y install git make cmake gcc-c++ gcc binutils clang clang-tools-extra
+
+# Deps for building ROOT 
+RUN dnf -y install libX11-devel libXpm-devel libXft-devel libXext-devel python openssl-devel compat-openssl11 
+
+# Libraries 
+
+
+# It is definitely a bit of a hack 
+# RUN dnf -y update && \
+# 	dnf -y install epel-release &&         			         `# Adding epel for screen and xclock` \
+# 	dnf -y install vim man screen xclock xdg-utils &&                 `# Various deps`\
+# 	dnf -y install patch libuuid libuuid-devel findutils && `# Deps for coding e.g. building root`\
+# 	dnf -y install git make cmake gcc-c++ gcc binutils libX11-devel &&  `# Deps for ROOT `\
+# 	dnf -y install libXpm-devel libXft-devel libXext-devel &&          `# (see https://root.cern/install/dependencies/)`\
+# 	dnf -y install python openssl-devel compat-openssl11  &&           `#` \
+# 	dnf -y install code neovim emacs                      &&           `# Text editors ` \
+# 	dnf -y install xorg-x11-xauth xdg-utils         &&                 `# Utilities ` \
+# 	dnf -y install clang clang-tools-extra llvm  	&&		   `# Dev-tools ` \
+# 	dnf -y install portaudio-devel libXrandr-devel   	&&	           `# Libraries ` \
+# 	dnf -y clean all && rm -rf /var/cache/yum # Cleanup!
 
 # Dir for course specific material
 ENV MNXB11_MNXB11DIR=/opt
@@ -32,13 +55,29 @@ RUN mkdir ${MNXB11_APPS}
 ENV MNXB11_SCRIPTS=${MNXB11_MNXB11DIR}/scripts
 RUN mkdir ${MNXB11_SCRIPTS}
 
+
+
 # ROOT build
 # Download sources
-ADD https://root.cern/download/root_v6.28.04.source.tar.gz ${MNXB11_DOWNLOADS}/root_v6.28.04.source.tar.gz
+# ADD https://root.cern/download/root_v6.28.04.source.tar.gz ${MNXB11_DOWNLOADS}/root_v6.28.04.source.tar.gz
 # Unpack
-RUN tar zxf ${MNXB11_DOWNLOADS}/root_v6.28.04.source.tar.gz -C ${MNXB11_SOURCEDIR}
+# RUN tar zxf ${MNXB11_DOWNLOADS}/root_v6.28.04.source.tar.gz -C ${MNXB11_SOURCEDIR}
 
 # Add all scripts in a scripts folder where this is ran
 ADD scripts/* ${MNXB11_SCRIPTS}/
 
+
+COPY ./scripts/init.sh /init.sh 
+RUN chmod +x /init.sh 
+
+
 CMD ["/bin/bash"]
+# Cleanup
+ENTRYPOINT ["/init.sh"]
+
+
+
+
+
+
+# CMD ["/init.sh"]

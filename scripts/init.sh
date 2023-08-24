@@ -1,11 +1,9 @@
-!/#bin/bash
-
 #!/bin/bash
 
 # Check if the folder MNXB11_APPS exists
-if [ -d "MNXB11_APPS" ]; then
+if [ -d "$MNXB11_APPS" ]; then
   # Loop through each subdirectory in MNXB11_APPS
-  for directory in MNXB11_APPS/*; do
+  for directory in $MNXB11_APPS/*; do
     # If the 'bin' folder exists, add it to the PATH variable
     if [ -d "$directory/bin" ]; then
       # 'bin' folders contain executable programs, adding them to PATH allows
@@ -59,3 +57,7 @@ if [ -d "MNXB11_APPS" ]; then
     # Add any other important development directories as needed here ...
   done
 fi
+
+
+# Run the default command or override it with any command passed as arguments
+exec "$@"
