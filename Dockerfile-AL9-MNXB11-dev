@@ -1,18 +1,24 @@
 FROM almalinux:9.2
 
-RUN dnf -y update
-# Adding epel for screen and xclock
-RUN dnf -y install epel-release
-RUN dnf -y update
 
-# Various deps
-RUN dnf -y install vim man screen xclock xdg-utils
+RUN dnf -y update 
+# Addding epel for screen and xclock 
+RUN dnf -y install epel-release 
 
-# Deps for coding e.g. building root
-RUN dnf -y install patch libuuid libuuid-devel
+# Various deps 
+RUN dnf -y install vim man screen xclock xdg-utils  xorg-x11-xauth 
 
-# Deps for ROOT (see https://root.cern/install/dependencies/)
-RUN dnf -y install git make cmake gcc-c++ gcc binutils libX11-devel libXpm-devel libXft-devel libXext-devel python openssl-devel compat-openssl11
+# Deps for coding (e.g. building root
+RUN dnf -y install patch libuuid libuuid-devel 
+
+# Unix utilities 
+RUN dnf -y install findutils  
+
+# Compilation/Build tools
+RUN dnf -y install git make cmake gcc-c++ gcc binutils clang clang-tools-extra
+
+# Deps for building ROOT 
+RUN dnf -y install libX11-devel libXpm-devel libXft-devel libXext-devel python openssl-devel compat-openssl11 
 
 # Dir for course specific material
 ENV MNXB11_MNXB11DIR=/opt
@@ -32,6 +38,8 @@ RUN mkdir ${MNXB11_APPS}
 ENV MNXB11_SCRIPTS=${MNXB11_MNXB11DIR}/scripts
 RUN mkdir ${MNXB11_SCRIPTS}
 
+
+
 # ROOT build
 # Download sources
 ADD https://root.cern/download/root_v6.28.04.source.tar.gz ${MNXB11_DOWNLOADS}/root_v6.28.04.source.tar.gz
@@ -41,4 +49,18 @@ RUN tar zxf ${MNXB11_DOWNLOADS}/root_v6.28.04.source.tar.gz -C ${MNXB11_SOURCEDI
 # Add all scripts in a scripts folder where this is ran
 ADD scripts/* ${MNXB11_SCRIPTS}/
 
+
+COPY ./scripts/init.sh /init.sh 
+RUN chmod +x /init.sh 
+
+
 CMD ["/bin/bash"]
+# Cleanup
+ENTRYPOINT ["/init.sh"]
+
+
+
+
+
+
+# CMD ["/init.sh"]
