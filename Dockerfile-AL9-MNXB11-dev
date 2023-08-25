@@ -1,44 +1,46 @@
 FROM almalinux:9.2
 
-
-RUN dnf -y update 
-# Addding epel for screen and xclock 
+# Add Repositories
+## Adding epel for screen and xclock 
 RUN dnf -y install epel-release 
 
-# Various deps 
-RUN dnf -y install vim man screen xclock xdg-utils  xorg-x11-xauth 
+# Update repo db
+RUN dnf -y update 
 
-# Deps for coding (e.g. building root
+# Installing
+## Various deps 
+RUN dnf -y install vim man screen xclock xdg-utils xorg-x11-xauth 
+
+## Deps for coding (e.g. building root
 RUN dnf -y install patch libuuid libuuid-devel 
 
-# Unix utilities 
+## Unix utilities 
 RUN dnf -y install findutils  
 
-# Compilation/Build tools
+## Compilation/Build tools
 RUN dnf -y install git make cmake gcc-c++ gcc binutils clang clang-tools-extra
 
-# Deps for building ROOT 
+## Deps for building ROOT 
 RUN dnf -y install libX11-devel libXpm-devel libXft-devel libXext-devel python openssl-devel compat-openssl11 
 
-# Dir for course specific material
+# Environment
+## Dir for course specific material
 ENV MNXB11_MNXB11DIR=/opt
-# Dir for all downloads
+## Dir for all downloads
 ENV MNXB11_DOWNLOADS=${MNXB11_MNXB11DIR}/download
 RUN mkdir ${MNXB11_DOWNLOADS}
-# Dir for all sources, a subfolder for each source tree
+## Dir for all sources, a subfolder for each source tree
 ENV MNXB11_SOURCEDIR=${MNXB11_MNXB11DIR}/source
 RUN mkdir $MNXB11_SOURCEDIR
-# Dir for all builds, a subfolder for each build environment
+## Dir for all builds, a subfolder for each build environment
 ENV MNXB11_BUILDDIR=${MNXB11_MNXB11DIR}/build
 RUN mkdir $MNXB11_BUILDDIR
-# Dir for all binaries, a subfolder for each software
+## Dir for all binaries, a subfolder for each software
 ENV MNXB11_APPS=${MNXB11_MNXB11DIR}/apps
 RUN mkdir ${MNXB11_APPS}
-# Dir for all scripts
+## Dir for all scripts
 ENV MNXB11_SCRIPTS=${MNXB11_MNXB11DIR}/scripts
 RUN mkdir ${MNXB11_SCRIPTS}
-
-
 
 # ROOT build
 # Download sources
@@ -49,18 +51,10 @@ RUN tar zxf ${MNXB11_DOWNLOADS}/root_v6.28.04.source.tar.gz -C ${MNXB11_SOURCEDI
 # Add all scripts in a scripts folder where this is ran
 ADD scripts/* ${MNXB11_SCRIPTS}/
 
-
-COPY ./scripts/init.sh /init.sh 
-RUN chmod +x /init.sh 
-
-
+# Run bash as the container starts
 CMD ["/bin/bash"]
-# Cleanup
-ENTRYPOINT ["/init.sh"]
 
+# Initialize environment a la Einar, I decided to hardcode the path here instead of moving stuff
+# init.sh must be inside the scripts path as the other scripts
+ENTRYPOINT ["/opt/scripts/init.sh"]
 
-
-
-
-
-# CMD ["/init.sh"]
