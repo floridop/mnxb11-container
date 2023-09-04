@@ -14,7 +14,10 @@ RUN dnf -y update
 
 # Installation
 ## Various deps
-RUN dnf -y install vim man screen xclock xorg-x11-xauth xdg-utils 
+RUN dnf -y install vim man screen xclock xorg-x11-xauth xdg-utils tree gitk tig meld strace
+
+## Broken meld dependencies in Alma Linux
+RUN dnf -y install python3-cairo python3-gobject
 
 ## Compiler tools 
 RUN dnf -y install clang clang-tools-extra llvm gdb lldb lld gold 
@@ -23,7 +26,7 @@ RUN dnf -y install clang clang-tools-extra llvm gdb lldb lld gold
 RUN dnf -y install patch libuuid libuuid-devel 
 
 ## Unix utilities 
-RUN dnf -y install findutils gawk grep 
+RUN dnf -y install findutils gawk grep
 
 ## Text editors 
 RUN dnf -y install code neovim emacs 
