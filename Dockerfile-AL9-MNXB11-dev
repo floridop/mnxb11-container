@@ -23,6 +23,9 @@ RUN dnf -y install git make cmake gcc-c++ gcc binutils clang clang-tools-extra
 ## Deps for building ROOT 
 RUN dnf -y install libX11-devel libXpm-devel libXft-devel libXext-devel python openssl-devel compat-openssl11 
 
+## Python dependencies used in some of the tutorial exercises to generate data
+RUN dnf -y python3-numpy
+
 # Environment
 ## Dir for course specific material
 ENV MNXB11_MNXB11DIR=/opt
