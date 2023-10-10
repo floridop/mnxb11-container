@@ -16,7 +16,7 @@ RUN dnf -y update
 ## Various deps
 RUN dnf -y install vim man screen xclock xorg-x11-xauth xdg-utils tree gitk tig meld strace figlet
 
-## Python dependencies
+## Python dependencies - note the crb repo install for venv dependencies
 RUN dnf -y --enablerepo=crb install python python3-pip python3-virtualenv
 ## Broken meld dependencies in Alma Linux
 RUN dnf -y install python3-cairo python3-gobject

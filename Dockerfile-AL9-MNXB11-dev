@@ -11,11 +11,18 @@ RUN dnf -y update
 ## Various deps 
 RUN dnf -y install vim man screen xclock xdg-utils xorg-x11-xauth 
 
+## Python dependencies - note the crb repo install for venv dependencies
+RUN dnf -y --enablerepo=crb install python python3-pip python3-virtualenv
+## Broken meld dependencies in Alma Linux
+RUN dnf -y install python3-cairo python3-gobject
+## Python dependencies used in some of the tutorial exercises to generate data
+RUN dnf -y install python3-numpy
+
 ## Deps for coding (e.g. building root
 RUN dnf -y install patch libuuid libuuid-devel 
 
 ## Unix utilities 
-RUN dnf -y install findutils  
+RUN dnf -y install findutils gawk grep
 
 ## Compilation/Build tools
 RUN dnf -y install git make cmake gcc-c++ gcc binutils clang clang-tools-extra
@@ -23,8 +30,6 @@ RUN dnf -y install git make cmake gcc-c++ gcc binutils clang clang-tools-extra
 ## Deps for building ROOT 
 RUN dnf -y install libX11-devel libXpm-devel libXft-devel libXext-devel python openssl-devel compat-openssl11 
 
-## Python dependencies used in some of the tutorial exercises to generate data
-RUN dnf -y python3-numpy
 
 # Environment
 ## Dir for course specific material
