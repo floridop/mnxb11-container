@@ -61,6 +61,9 @@ ENV MNXB11_SCRIPTS=${MNXB11_MNXB11DIR}/scripts
 RUN mkdir ${MNXB11_SCRIPTS}
 ## Do we need a custom LIBS folder?
 
+## Customization of prompt for Apptainer
+ENV APPTAINERENV_PS1='Apptainer \u@\h \w > '
+
 # Binaries and scripts
 ## Place all precompiled software in a folder called "apps" in the folder where you
 ## run `docker build`. The following line will copy all of them in ${APPS}.
