@@ -37,6 +37,9 @@ RUN dnf -y install git make cmake gcc-c++ gcc binutils libX11-devel libXpm-devel
 ## Debug info 
 RUN dnf -y debuginfo-install glibc-2.34-60.el9.x86_64 libgcc-11.3.1-4.3.el9.alma.x86_64 libstdc++-11.3.1-4.3.el9.alma.x86_64
 
+## Python dependencies used in some of the tutorial exercises to generate data
+RUN dnf -y python3-numpy
+
 # Environment
 ## Dir for course specific material
 ENV MNXB11_MNXB11DIR=/opt
