@@ -1,0 +1,127 @@
+# MNXB11 native apptainer container build
+# WIP. Following: https://apptainer.org/docs/user/main/definition_files.html
+
+Bootstrap: docker
+From: almalinux:9.3
+
+# TODO: create base filesystem here, this is executed outside the container.
+#%setup
+#    touch /file1 # on host
+#     touch ${APPTAINER_ROOTFS}/file2 # inside container image
+
+# TODO Copy external files inside, safer than above
+#%files [from <stage>]
+#    <source> [<destination>]
+#    ...
+
+# TODO: add repos and install SW here
+#%post
+    dnf -y update
+    ## Adding epel for screen and xclock
+    dnf -y install epel-release
+    dnf -y update
+    
+    ## 
+    dnf -y install perl
+    dnf groupinstall -y 'Development tools'
+    dnf config-manager --set-enabled crb
+    dnf builddep nordugrid-arc -y --nobest
+    dnf install -y wget unzip lsof doxygen emacs bash-completion rsync vim
+
+%environment
+    export LC_ALL=C
+
+%runscript
+    perl -v
+
+%labels
+    Author florido.paganelli@fysik.lu.se
+    Version v1.0
+    MyLabel MNXB11 2024
+
+
+FROM almalinux:9.2
+
+# Add repos
+## Adding epel for screen and xclock
+RUN dnf -y install epel-release
+
+## External repos
+## VSCode
+RUN rpm --import https://packages.microsoft.com/keys/microsoft.asc
+RUN sh -c 'echo -e "[code]\nname=Visual Studio Code\nbaseurl=https://packages.microsoft.com/yumrepos/vscode\nenabled=1\ngpgcheck=1\ngpgkey=https://packages.microsoft.com/keys/microsoft.asc" > /etc/yum.repos.d/vscode.repo'
+
+# update repos db
+RUN dnf -y update
+
+# Installation
+## Various deps
+RUN dnf -y install vim man screen xclock xorg-x11-xauth xdg-utils tree gitk tig meld strace figlet
+
+## Python dependencies - note the crb repo install for venv dependencies
+RUN dnf -y --enablerepo=crb install python python3-pip python3-virtualenv
+## Broken meld dependencies in Alma Linux
+RUN dnf -y install python3-cairo python3-gobject
+## Python dependencies used in some of the tutorial exercises to generate data
+RUN dnf -y install python3-numpy
+
+## Compiler tools 
+RUN dnf -y install clang clang-tools-extra llvm gdb lldb lld gold 
+
+## Deps for coding e.g. building root
+RUN dnf -y install patch libuuid libuuid-devel 
+
+## Unix utilities 
+RUN dnf -y install findutils gawk grep
+
+## Text editors 
+RUN dnf -y install code neovim emacs nano
+
+## Deps for ROOT (see https://root.cern/install/dependencies/)
+RUN dnf -y install git make cmake gcc-c++ gcc binutils libX11-devel libXpm-devel libXft-devel libXext-devel python openssl-devel compat-openssl11
+
+## Debug info 
+RUN dnf -y debuginfo-install glibc-2.34-60.el9.x86_64 libgcc-11.3.1-4.3.el9.alma.x86_64 libstdc++-11.3.1-4.3.el9.alma.x86_64
+
+# Environment
+## Dir for course specific material
+ENV MNXB11_MNXB11DIR=/opt
+## Dir for all downloads
+ENV MNXB11_DOWNLOADS=${MNXB11_MNXB11DIR}/download
+RUN mkdir ${MNXB11_DOWNLOADS}
+## Dir for all sources, a subfolder for each source tree
+ENV MNXB11_SOURCEDIR=${MNXB11_MNXB11DIR}/source
+RUN mkdir $MNXB11_SOURCEDIR
+## Dir for all builds, a subfolder for each build environment
+ENV MNXB11_BUILDDIR=${MNXB11_MNXB11DIR}/build
+RUN mkdir $MNXB11_BUILDDIR
+## Dir for all binaries, a subfolder for each software
+ENV MNXB11_APPS=${MNXB11_MNXB11DIR}/apps
+RUN mkdir ${MNXB11_APPS}
+## Dir for all scripts
+ENV MNXB11_SCRIPTS=${MNXB11_MNXB11DIR}/scripts
+RUN mkdir ${MNXB11_SCRIPTS}
+## Do we need a custom LIBS folder?
+
+## Customization of prompt for Apptainer
+ENV APPTAINERENV_PS1='Apptainer \u@\h \w > '
+
+# Binaries and scripts
+## Place all precompiled software in a folder called "apps" in the folder where you
+## run `docker build`. The following line will copy all of them in ${APPS}.
+## Note: one app per folder, to keep consistency.
+ADD apps $MNXB11_APPS
+
+# Add all scripts in a scripts folder where this is ran
+ADD scripts/* ${MNXB11_SCRIPTS}/
+
+# Run bash as default app when launching the container
+CMD ["/bin/bash"]
+
+# Initialize env a la Einar, but without copying
+# ENTRYPOINT does not resolve the variables, and suggested solutions I found are not usable.
+# So better to hardcode the folder names here.
+ENTRYPOINT ["/opt/scripts/init.sh"]
+
+
+
