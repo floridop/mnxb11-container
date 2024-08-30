@@ -15,6 +15,8 @@ https://hub.docker.com/repository/docker/floridop/mnxb11/general
 The basic minimal Dockerfile to build the course container.  
 It does not contain sources to build software.  
 Only binaries and headers should be added to this container.
+The applications that needs to be added must be copied inside the `apps` folder before building the container.
+To add or compile an app for the container, read the section "Building software in an existing container"
 
 `Dockerfile-AL9-MNXB11-dev`
 
@@ -22,6 +24,14 @@ The Docker container used to build some of the software.
 It will download the sources needed and build the software at container creation time.  
 You should download this if you're a teacher or a student that wants to build additional software for the container.  
 It takes more time and it will generate a larger container image.
+
+# Description of the typcal workflow
+
+The typical workflow to prepare this container is to 
+
+  1. Use `Dockerfile-AL9-MNXB11-dev` to create a development container with all the sources needed to build
+  2. Build any software following the described procedure in "Building software in an existing container", to generate the binaries that will go inside the `apps` folder
+  3. Build a runtime container using `Dockerfile-AL9-MNXB11` that contains only binaries and the apps folder with the apps built above
 
 # How to build the container images
 
