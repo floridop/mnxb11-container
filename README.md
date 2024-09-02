@@ -129,7 +129,7 @@ For this step to work you need a working docker or singularity/apptainer install
 This makes sense only on a machine where you are administrator, i.e. not at Lunarc.
 
 ```bash
-docker build -t "mnxb11:al9-dev.myversion" -f Dockerfile-AL9-MNXB11-dev
+docker build -t "mnxb11:al9-dev.myversion" -f Dockerfile-AL9-MNXB11-dev .
 ```
 
 ## 4. Start the container with a bind mount
