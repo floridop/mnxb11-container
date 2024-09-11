@@ -39,7 +39,7 @@ RUN dnf -y install code neovim emacs nano
 RUN dnf -y install git make cmake gcc-c++ gcc binutils libX11-devel libXpm-devel libXft-devel libXext-devel python openssl-devel compat-openssl11
 
 ## Debug info 
-RUN dnf -y debuginfo-install glibc-2.34-60.el9.x86_64 libgcc-11.3.1-4.3.el9.alma.x86_64 libstdc++-11.3.1-4.3.el9.alma.x86_64
+RUN dnf -y debuginfo-install glibc libgcc libstdc++
 
 # Environment
 ## Dir for course specific material
@@ -74,11 +74,13 @@ ADD apps $MNXB11_APPS
 ADD scripts/* ${MNXB11_SCRIPTS}/
 
 # Run bash as default app when launching the container
-CMD ["/bin/bash"]
+# Decided to remove this as it causes problems with native docker
+#CMD ["/bin/bash"]
 
 # Initialize env a la Einar, but without copying
 # ENTRYPOINT does not resolve the variables, and suggested solutions I found are not usable.
 # So better to hardcode the folder names here.
+# Test if it works upon login after removing bash exec above - seems to work
 ENTRYPOINT ["/opt/scripts/init.sh"]
 
 
