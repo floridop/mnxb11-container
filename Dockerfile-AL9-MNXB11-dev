@@ -1,4 +1,4 @@
-FROM almalinux:9.2
+FROM almalinux:9.4
 
 # Add Repositories
 ## Adding epel for screen and xclock 
@@ -59,8 +59,8 @@ RUN tar zxf ${MNXB11_DOWNLOADS}/root_v6.28.04.source.tar.gz -C ${MNXB11_SOURCEDI
 # Add all scripts in a scripts folder where this is ran
 ADD scripts/* ${MNXB11_SCRIPTS}/
 
-# Run bash as the container starts
-CMD ["/bin/bash"]
+# Run bash as the container starts - removed 2024, causes problems on some systems
+#CMD ["/bin/bash"]
 
 # Initialize environment a la Einar, I decided to hardcode the path here instead of moving stuff
 # init.sh must be inside the scripts path as the other scripts
