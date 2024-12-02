@@ -29,6 +29,8 @@ RUN dnf -y install git make cmake gcc-c++ gcc binutils clang clang-tools-extra
 
 ## Deps for building ROOT 
 RUN dnf -y install libX11-devel libXpm-devel libXft-devel libXext-devel python openssl-devel compat-openssl11 
+## Deps added by request of students
+RUN dnf -y install fftw fftw-libs fftw-devel fftw-static fftw2 fftw2-devel fftw2-static
 
 
 # Environment
