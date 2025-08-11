@@ -1,6 +1,6 @@
-FROM almalinux:9.4
+FROM almalinux:9.6
 
-# Add repos
+# Add Repositories
 ## Adding epel for screen and xclock
 RUN dnf -y install epel-release
 
@@ -14,7 +14,7 @@ RUN dnf -y update
 
 # Installation
 ## Various deps
-RUN dnf -y install vim man screen xclock xorg-x11-xauth xdg-utils tree gitk tig meld strace figlet
+RUN dnf -y install figlet gitk htop man meld psmisc screen strace tig tree vim xclock xdg-utils xorg-x11-xauth
 
 ## Python dependencies - note the crb repo install for venv dependencies
 RUN dnf -y --enablerepo=crb install python python3-pip python3-virtualenv
@@ -38,6 +38,8 @@ RUN dnf -y install code neovim emacs nano
 ## Deps for ROOT (see https://root.cern/install/dependencies/)
 ## Other deps upon request by students: fftw fftw3
 RUN dnf -y install git make cmake gcc-c++ gcc binutils libX11-devel libXpm-devel libXft-devel libXext-devel python openssl-devel compat-openssl11 fftw
+## Additional deps to have a complete working ROOT install
+RUN dnf -y --enablerepo=crb install xrootd-client-devel xrootd-libs-devel gcc-gfortran pcre-devel mesa-libGL-devel mesa-libGLU-devel glew-devel ftgl-devel mysql-devel fftw-devel cfitsio-devel graphviz-devel libuuid-devel avahi-compat-libdns_sd-devel openldap-devel python-devel python3-numpy libxml2-devel gsl-devel readline-devel qt5-qtwebengine-devel R-devel R-Rcpp-devel R-RInside-devel
 
 ## Debug info 
 RUN dnf -y debuginfo-install glibc libgcc libstdc++

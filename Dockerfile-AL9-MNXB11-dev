@@ -1,4 +1,4 @@
-FROM almalinux:9.4
+FROM almalinux:9.6
 
 # Add Repositories
 ## Adding epel for screen and xclock 
@@ -31,7 +31,8 @@ RUN dnf -y install git make cmake gcc-c++ gcc binutils clang clang-tools-extra
 RUN dnf -y install libX11-devel libXpm-devel libXft-devel libXext-devel python openssl-devel compat-openssl11 
 ## Deps added by request of students
 RUN dnf -y install fftw fftw-libs fftw-devel fftw-static fftw2 fftw2-devel fftw2-static
-
+## Full root deps according to official docs - might require the equivalent of powertools for centos
+RUN dnf -y --enablerepo=crb install xrootd-client-devel xrootd-libs-devel gcc-gfortran pcre-devel mesa-libGL-devel mesa-libGLU-devel glew-devel ftgl-devel mysql-devel fftw-devel cfitsio-devel graphviz-devel libuuid-devel avahi-compat-libdns_sd-devel openldap-devel python-devel python3-numpy libxml2-devel gsl-devel readline-devel qt5-qtwebengine-devel R-devel R-Rcpp-devel R-RInside-devel
 
 # Environment
 ## Dir for course specific material
@@ -52,11 +53,11 @@ RUN mkdir ${MNXB11_APPS}
 ENV MNXB11_SCRIPTS=${MNXB11_MNXB11DIR}/scripts
 RUN mkdir ${MNXB11_SCRIPTS}
 
-# ROOT build
+# ROOT build - jumping to 6.28.10 for security issues
 # Download sources
-ADD https://root.cern/download/root_v6.28.04.source.tar.gz ${MNXB11_DOWNLOADS}/root_v6.28.04.source.tar.gz
+ADD https://root.cern/download/root_v6.28.10.source.tar.gz ${MNXB11_DOWNLOADS}/root_v6.28.10.source.tar.gz
 # Unpack
-RUN tar zxf ${MNXB11_DOWNLOADS}/root_v6.28.04.source.tar.gz -C ${MNXB11_SOURCEDIR}
+RUN tar zxf ${MNXB11_DOWNLOADS}/root_v6.28.10.source.tar.gz -C ${MNXB11_SOURCEDIR}
 
 # Add all scripts in a scripts folder where this is ran
 ADD scripts/* ${MNXB11_SCRIPTS}/

@@ -199,6 +199,12 @@ In order to build the course container with the new app,
   docker push yourdockerusername/mnxb11:al9-dev.myversion
   ```
 
+The suggested version naming since 2024 is the following:
+
+`al9-dev.YYYY.MM.DD`
+
+Example: `al9-dev.2024.10.31`
+
 ## 9. Fork the repo and add your fork, then submit a pull request
 
 Alternatively you can send me the files, but I would really prefer you use git.
